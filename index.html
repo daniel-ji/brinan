@@ -114,7 +114,7 @@
         if (count < MAX_COOKS) {
           addBouncingCook();
         }
-      }, 4007);
+      }, 2007);
 
       // simulate gravity
       setInterval(() => {
@@ -127,16 +127,16 @@
           cook.style.top = top + yVelocity + "px";
           cook.style.left = left + xVelocity + "px";
 
-          if (top > window.innerHeight) {
-            cookObjects[i].yVelocity = -1 * Math.random() * 2 - 2;
+          if (top > window.innerHeight - 80) {
+            cookObjects[i].yVelocity = -1 * Math.random() * 1 - 2;
           } else if (top < 0) {
-            cookObjects[i].yVelocity = Math.random() * 2 + 2;
+            cookObjects[i].yVelocity = Math.random() * 1 + 2;
           }
 
-          if (left > window.innerWidth) {
-            cookObjects[i].xVelocity = -1 * Math.random() * 2 - 2;
+          if (left > window.innerWidth - 80) {
+            cookObjects[i].xVelocity = -1 * Math.random() * 1 - 2;
           } else if (left < 0) {
-            cookObjects[i].xVelocity = Math.random() * 2 + 2;
+            cookObjects[i].xVelocity = Math.random() * 1 + 2;
           }
         });
       }, 10);
