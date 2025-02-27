@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Byron Cook</title>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        background-image: url("beach.webp");
+        background-size: cover;
+      }
+
+      h1 {
+        color: white;
+        font-family: sans-serif;
+      }
+
+      #cook {
+        position: absolute;
+        width: 30vw;
+        height: 30vw;
+        /* Perspective for 3D effect */
+        transform-style: preserve-3d;
+
+        /* Animation */
+        animation: rotate3D 10s linear infinite;
+        transition: transform 0.1s linear;
+      }
+
+      .bouncing-cook {
+        animation: rotate2D 5s linear infinite;
+      }
+
+      @keyframes rotate2D {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes rotate3D {
+        0% {
+          transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(0deg) rotateY(360deg) rotateZ(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello! I am Byron Cook. Welcome to my peaceful abode.</h1>
+    <img src="thecookster.png" id="cook" />
+
+    <script>
+      document.addEventListener("mousemove", function (event) {
+        let image = document.getElementById("cook");
+
+        // Move the image slightly ahead for a smooth trailing effect
+        image.style.left = event.pageX + 10 - image.width / 2 + "px";
+        image.style.top = event.pageY + 10 - image.height / 2 + "px";
+      });
+
+      const cookObjects = [];
+      let count = 0;
+
+      RANDOM_IMAGE_LIST = [
+        "transparent_cook.png",
+        "transparent_potato.png",
+        "transparent_seal.png",
+        "transparent_lacrosse.png",
+        "transparent_molly.png",
+      ];
+
+      const addBouncingCook = (specificPicture) => {
+        const image = document.createElement("img");
+        image.classList.add("bouncing-cook");
+        if (specificPicture) {
+          image.src = specificPicture;
+        } else {
+          image.src =
+            RANDOM_IMAGE_LIST[
+              Math.floor(Math.random() * RANDOM_IMAGE_LIST.length)
+            ];
+        }
+        image.style.position = "absolute";
+        image.style.width = "80";
+        image.style.height = "80px";
+        image.style.left = Math.random() * window.innerWidth + "px";
+        image.style.top = Math.random() * window.innerHeight + "px";
+        const xVelocity = Math.random() * 5 - 2.5;
+        const yVelocity = Math.random() * 5 - 2.5;
+        cookObjects[count] = { xVelocity, yVelocity };
+        count++;
+        console.log(count);
+
+        document.body.appendChild(image);
+      };
+
+      for (const image of RANDOM_IMAGE_LIST) {
+        addBouncingCook(image);
+      }
+
+      let MAX_COOKS = 30;
+      setInterval(() => {
+        if (count < MAX_COOKS) {
+          addBouncingCook();
+        }
+      }, 4007);
+
+      // simulate gravity
+      setInterval(() => {
+        const cooks = document.querySelectorAll(".bouncing-cook");
+        cooks.forEach((cook, i) => {
+          const top = parseFloat(cook.style.top.replace("px", ""));
+          const left = parseFloat(cook.style.left.replace("px", ""));
+          const { xVelocity, yVelocity } = cookObjects[i];
+
+          cook.style.top = top + yVelocity + "px";
+          cook.style.left = left + xVelocity + "px";
+
+          if (top > window.innerHeight) {
+            cookObjects[i].yVelocity = -1 * Math.random() * 2 - 2;
+          } else if (top < 0) {
+            cookObjects[i].yVelocity = Math.random() * 2 + 2;
+          }
+
+          if (left > window.innerWidth) {
+            cookObjects[i].xVelocity = -1 * Math.random() * 2 - 2;
+          } else if (left < 0) {
+            cookObjects[i].xVelocity = Math.random() * 2 + 2;
+          }
+        });
+      }, 10);
+    </script>
+  </body>
+</html>
