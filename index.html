@@ -67,7 +67,7 @@
     <img src="thecookster.png" id="cook" />
 
     <script>
-      const BALL_SIZE = 400;
+      const BALL_SIZE = 800;
 
       document.addEventListener("mousemove", function (event) {
         let image = document.getElementById("cook");
@@ -171,8 +171,8 @@
             if (
               top > window.innerHeight ||
               left > window.innerWidth ||
-              top < 0 ||
-              left < 0
+              top < -BALL_SIZE ||
+              left < -BALL_SIZE
             ) {
               cookObjects[i] = null;
               cook.remove();
