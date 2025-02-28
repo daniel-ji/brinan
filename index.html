@@ -145,7 +145,7 @@
 
       let MAX_COOKS = 100;
       setInterval(() => {
-        if (cookObjects.filter((c) => c !== null && c.noBounce) < MAX_COOKS) {
+        if (cookObjects.filter((c) => c !== null && c.noBounce).length < MAX_COOKS) {
           addBouncingCook();
         }
       }, 2007);
@@ -157,7 +157,6 @@
           if (cookObject === null) {
             continue;
           }
-          console.log(cookObjects[i]);
           const cook = document.getElementById(cookObject.id);
 
           const top = parseFloat(cook.style.top.replace("px", ""));
