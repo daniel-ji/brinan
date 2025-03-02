@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Byron Cook</title>
+    <title>Brian Cook</title>
 
     <style>
       body {
@@ -14,6 +14,8 @@
         overflow: hidden;
         background-image: url("beach.webp");
         background-size: cover;
+        transition: 10s;
+        transition-timing-function: cubic-bezier(1, 0.25, 0.65, 0.5);
       }
 
       h1 {
@@ -21,6 +23,13 @@
         font-family: sans-serif;
         user-select: none;
         pointer-events: none;
+        z-index: 1;
+      }
+
+      h1 a {
+        cursor: pointer;
+        pointer-events: all;
+        color: #C8102E;
       }
 
       #cook {
@@ -33,6 +42,7 @@
         /* Animation */
         animation: rotate3D 10s linear infinite;
         transition: transform 0.1s linear;
+        user-select: none;
       }
 
       .bouncing-cook {
@@ -63,7 +73,10 @@
     </style>
   </head>
   <body>
-    <h1>Hello! I am Byron Cook. Welcome to my peaceful abode.</h1>
+    <h1 id="title">
+      Hello! I am <a href="#" id="b" style="display: none">Byron</a
+      ><span id="fake-b">Brian</span> Cook. Welcome to my peaceful abode.
+    </h1>
     <img src="thecookster.png" id="cook" />
 
     <script>
@@ -77,17 +90,59 @@
         image.style.top = event.pageY + 10 - image.height / 2 + "px";
       });
 
+      setTimeout(() => {
+        document.getElementById("b").style.display = "inline-block";
+        document.getElementById("fake-b").style.display = "none";
+      }, 10000);
+
       document.addEventListener("click", function (event) {
-        shootBall(event.pageX - BALL_SIZE / 2, event.pageY - BALL_SIZE / 2);
+        if (america) {
+          shootBall(event.pageX - BALL_SIZE / 2, event.pageY - BALL_SIZE / 2);
+        }
+      });
+
+      let audio = new Audio("free_bird.mp3");
+      let america = false;
+
+      document.getElementById("b").addEventListener("click", function (event) {
+        if (!america) {
+          document.title = "BYRON COOK"
+          document.getElementById("title").innerHTML =
+            "RAHHHHHHHHHHHHHHHHHHHHHH 🦅🦅🦅🦅 WHAT IS A FÚTBOL (SOUND UP).";
+          setTimeout(() => {
+            audio.play();
+          }, 3000);
+
+          setTimeout(() => {
+            document.getElementById("title").style.transition = "2s";
+            document.getElementById("title").style.color = "#00205B";
+            document.getElementById("title").style.backgroundColor = "#C8102E";
+            document.getElementById("cook").src = "byron.png";
+          }, 6000);
+
+          setTimeout(() => {
+            randomImageList = ["america_lacrosse.png"];
+            for (const e of document.getElementsByClassName("bouncing-cook")) {
+              e.src = "america_lacrosse.png";
+            }
+          }, 9000);
+        } else {
+          if (audio.paused) {
+            audio.play();
+          }
+        }
+        document.body.style.backgroundImage = 'url("usa_lacrosse.png")';
+        america = true;
       });
 
       const cookObjects = [];
-      RANDOM_IMAGE_LIST = [
+      let randomImageList = [
         "transparent_cook.png",
         "transparent_potato.png",
         "transparent_seal.png",
-        "transparent_lacrosse.png",
+        // "transparent_lacrosse.png",
         "transparent_molly.png",
+        "hemo.png",
       ];
 
       const shootBall = (x, y) => {
@@ -118,9 +173,7 @@
           image.src = specificPicture;
         } else {
           image.src =
-            RANDOM_IMAGE_LIST[
-              Math.floor(Math.random() * RANDOM_IMAGE_LIST.length)
-            ];
+            randomImageList[Math.floor(Math.random() * randomImageList.length)];
         }
         image.style.position = "absolute";
         image.style.width = "80";
@@ -140,13 +193,15 @@
         document.body.appendChild(image);
       };
 
-      for (const image of RANDOM_IMAGE_LIST) {
+      for (const image of randomImageList) {
         addBouncingCook(image);
       }
 
       let MAX_COOKS = 100;
       setInterval(() => {
-        if (cookObjects.filter((c) => c !== null && c.noBounce).length < MAX_COOKS) {
+        if (
+          cookObjects.filter((c) => c !== null && c.noBounce).length < MAX_COOKS
+        ) {
           addBouncingCook();
         }
       }, 2007);
